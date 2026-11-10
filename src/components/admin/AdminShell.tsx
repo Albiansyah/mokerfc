@@ -45,7 +45,7 @@ const NAV_ITEMS = [
     ]
   },
   { 
-    label: "Pengaturan", 
+    label: "Setelan", 
     href: "/admin/pengaturan", 
     icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /> 
   },
@@ -61,6 +61,8 @@ export function AdminShell({ children, email }: { children: React.ReactNode; ema
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col md:flex-row">
+      
+      {/* SIDEBAR (Hanya Muncul di Desktop) */}
       <aside className="hidden md:flex flex-col w-64 bg-white border-r border-slate-200 fixed inset-y-0 z-50">
         <div className="p-6 flex items-center gap-3 border-b border-slate-100">
           <Image 
@@ -79,7 +81,6 @@ export function AdminShell({ children, email }: { children: React.ReactNode; ema
             const isActive = item.subItems 
               ? item.subItems.some(sub => pathname.startsWith(sub.href))
               : pathname === item.href;
-              
             const isOpen = openMenus[item.label];
             
             return (
@@ -145,27 +146,36 @@ export function AdminShell({ children, email }: { children: React.ReactNode; ema
         </div>
       </aside>
 
+      {/* AREA KONTEN UTAMA */}
       <div className="flex-1 md:pl-64 flex flex-col min-h-screen">
-        <header className="md:hidden flex items-center justify-between p-4 bg-white border-b border-slate-200 sticky top-0 z-40">
-          <Image 
-            src="/brand/logo-full.png" 
-            alt="Logo" 
-            width={32} 
-            height={32} 
-            className="h-8 w-auto" 
-            style={{ width: "auto", height: "auto" }}
-          />
-          <form action={signOutAction}>
-            <button className="text-xs font-bold text-red">Keluar</button>
-          </form>
-        </header>
-
         <main className="flex-1 p-4 sm:p-8 pb-24 md:pb-8">
           <div className="max-w-6xl mx-auto">
             {children}
           </div>
         </main>
       </div>
+
+      {/* BOTTOM NAVIGATION (Hanya Muncul di Mobile/HP) */}
+      <nav className="fixed bottom-0 inset-x-0 z-40 bg-white border-t border-slate-200 flex justify-around md:hidden pb-safe shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
+        {NAV_ITEMS.map((item) => {
+          const isActive = item.subItems 
+            ? item.subItems.some(sub => pathname.startsWith(sub.href))
+            : pathname === item.href;
+            
+          return (
+            <Link 
+              key={item.label} 
+              href={item.subItems ? item.subItems[0].href : item.href!} 
+              className={`flex flex-col items-center justify-center p-2 w-full ${
+                isActive ? "text-red" : "text-slate-400 hover:text-slate-600"
+              }`}
+            >
+              <svg className="w-5 h-5 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">{item.icon}</svg>
+              <span className="text-[10px] font-bold">{item.label}</span>
+            </Link>
+          );
+        })}
+      </nav>
     </div>
   );
 }
