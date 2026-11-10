@@ -1,0 +1,12 @@
+import { requireAdmin } from "@/lib/supabase/admin";
+import { AdminShell } from "@/components/admin/AdminShell";
+
+export default async function ProtectedAdminLayout({ children }: { children: React.ReactNode }) {
+  const { user } = await requireAdmin(); 
+  
+  return (
+    <AdminShell email={user.email ?? "Admin"}>
+      {children}
+    </AdminShell>
+  );
+}

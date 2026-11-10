@@ -1,0 +1,22 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/_global-error/page": "app/_global-error/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/robots.txt/route": "app/robots.txt/route.js",
+  "/sitemap.xml/route": "app/sitemap.xml/route.js",
+  "/acara/[slug]/page": "app/acara/[slug]/page.js",
+  "/page": "app/page.js",
+  "/acara/page": "app/acara/page.js",
+  "/galeri/page": "app/galeri/page.js",
+  "/sparring/page": "app/sparring/page.js",
+  "/sponsor/page": "app/sponsor/page.js",
+  "/admin/login/page": "app/admin/login/page.js",
+  "/admin/(protected)/acara/[id]/page": "app/admin/(protected)/acara/[id]/page.js",
+  "/admin/(protected)/acara/[id]/pendaftar/page": "app/admin/(protected)/acara/[id]/pendaftar/page.js",
+  "/admin/(protected)/acara/baru/page": "app/admin/(protected)/acara/baru/page.js",
+  "/admin/(protected)/acara/page": "app/admin/(protected)/acara/page.js",
+  "/admin/(protected)/galeri/[id]/page": "app/admin/(protected)/galeri/[id]/page.js",
+  "/admin/(protected)/galeri/page": "app/admin/(protected)/galeri/page.js",
+  "/admin/(protected)/page": "app/admin/(protected)/page.js",
+  "/admin/(protected)/pengaturan/page": "app/admin/(protected)/pengaturan/page.js"
+}

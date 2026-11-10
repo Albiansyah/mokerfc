@@ -1,0 +1,74 @@
+:root {
+  --navy: #0F1F3D;
+  --red: #D4161C;
+  --paper: #F7F4EE;
+  --surface: #FFFFFF;
+  --gold: #D4A94F;
+  --ink: #0F1F3D;
+  --ink-muted: #4B5870;
+  --shape-cut: 12px;
+  --shape-cut-small: 6px;
+  --shape-keyline-width: 1px;
+  --shape-outline-width: 2px;
+  --shape-radius: 0px;
+  --shape-clip: polygon(
+    var(--shape-cut) 0%,
+    calc(100% - var(--shape-cut)) 0%,
+    100% var(--shape-cut),
+    100% calc(100% - var(--shape-cut)),
+    calc(100% - var(--shape-cut)) 100%,
+    var(--shape-cut) 100%,
+    0% calc(100% - var(--shape-cut)),
+    0% var(--shape-cut)
+  );
+  --shape-clip-small: polygon(
+    var(--shape-cut-small) 0%,
+    calc(100% - var(--shape-cut-small)) 0%,
+    100% var(--shape-cut-small),
+    100% calc(100% - var(--shape-cut-small)),
+    calc(100% - var(--shape-cut-small)) 100%,
+    var(--shape-cut-small) 100%,
+    0% calc(100% - var(--shape-cut-small)),
+    0% var(--shape-cut-small)
+  );
+  --chamfer: var(--shape-cut);
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  --bg: var(--paper);
+  --fg: var(--ink);
+  --border: rgba(15, 31, 61, 0.15);
+  --border-strong: #0F1F3D;
+  --focus-ring: #0F1F3D;
+}
+
+html.dark,
+[data-theme='dark'] {
+  --navy: #0F1F3D;
+  --red: #E02A30;
+  --paper: #0B1730;
+  --surface: #13264A;
+  --gold: #D4A94F;
+  --ink: #F7F4EE;
+  --ink-muted: #B8C2D6;
+
+  --bg: var(--paper);
+  --fg: var(--ink);
+  --border: rgba(247, 244, 238, 0.18);
+  --border-strong: #F7F4EE;
+  --focus-ring: #D4A94F;
+}
+
+.chamfer-btn,
+.chamfer-card {
+  border-radius: var(--shape-radius);
+  clip-path: var(--shape-clip);
+}
+
+.chamfer-sm {
+  border-radius: var(--shape-radius);
+  clip-path: var(--shape-clip-small);
+}
+
+.keyline-gold {
+  border-color: var(--gold);
+}

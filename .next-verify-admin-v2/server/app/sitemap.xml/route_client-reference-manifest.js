@@ -1,0 +1,1 @@
+globalThis.__RSC_MANIFEST=(globalThis.__RSC_MANIFEST||{});globalThis.__RSC_MANIFEST["/sitemap.xml/route"]={"moduleLoading":{"prefix":"/_next/"},"ssrModuleMapping":{},"edgeSSRModuleMapping":{},"clientModules":{},"entryCSSFiles":{"D:\\MY PROJECT\\PERSONAL\\Mokerfc\\moker-fc\\src\\app\\sitemap.xml\\route":[]},"rscModuleMapping":{},"edgeRscModuleMapping":{}};

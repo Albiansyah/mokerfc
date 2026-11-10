@@ -1,0 +1,22 @@
+{
+  "/_not-found/page": "/_not-found",
+  "/_global-error/page": "/_global-error",
+  "/favicon.ico/route": "/favicon.ico",
+  "/robots.txt/route": "/robots.txt",
+  "/sitemap.xml/route": "/sitemap.xml",
+  "/acara/[slug]/page": "/acara/[slug]",
+  "/page": "/",
+  "/acara/page": "/acara",
+  "/galeri/page": "/galeri",
+  "/sparring/page": "/sparring",
+  "/sponsor/page": "/sponsor",
+  "/admin/login/page": "/admin/login",
+  "/admin/(protected)/acara/[id]/page": "/admin/acara/[id]",
+  "/admin/(protected)/acara/[id]/pendaftar/page": "/admin/acara/[id]/pendaftar",
+  "/admin/(protected)/acara/baru/page": "/admin/acara/baru",
+  "/admin/(protected)/acara/page": "/admin/acara",
+  "/admin/(protected)/galeri/[id]/page": "/admin/galeri/[id]",
+  "/admin/(protected)/galeri/page": "/admin/galeri",
+  "/admin/(protected)/page": "/admin",
+  "/admin/(protected)/pengaturan/page": "/admin/pengaturan"
+}
