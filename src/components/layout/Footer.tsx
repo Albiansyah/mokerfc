@@ -25,9 +25,10 @@ export function Footer({ settings }: FooterProps) {
                 alt="Logo Moker FC United"
                 width={40}
                 height={40}
-                className="object-contain w-auto h-10"
+                className="object-contain"
+                style={{ height: "40px", width: "auto" }}
               />
-              <span className="font-heading font-extrabold text-xl uppercase tracking-wide text-navy">
+              <span className="font-extrabold text-xl uppercase tracking-wide text-navy">
                 MOKER FC <span className="text-red">UNITED</span>
               </span>
             </Link>

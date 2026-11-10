@@ -50,7 +50,6 @@ export function Header({
     >
       <div className="max-w-300 mx-auto px-6 lg:px-8 h-full flex items-center justify-between gap-4">
         
-        {/* Logo */}
         <Link
           href="/"
           className="flex items-center gap-3 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red flex-shrink-0"
@@ -71,7 +70,6 @@ export function Header({
           </span>
         </Link>
 
-        {/* Menu Tengah */}
         <nav className="hidden min-[900px]:flex items-center gap-8">
           {NAV_LINKS.map((link) => {
             const isActive = pathname === link.href;
@@ -95,10 +93,8 @@ export function Header({
           })}
         </nav>
 
-        {/* Tombol Kanan */}
         <div className="flex items-center gap-2 sm:gap-4">
           
-          {/* Tombol Masuk (Discrete) */}
           <Link 
             href="/admin/login"
             className="hidden sm:flex items-center gap-1.5 text-sm font-semibold text-slate-500 hover:text-navy transition-colors px-2 py-1"
@@ -118,7 +114,6 @@ export function Header({
             Daftar Main
           </Button>
 
-          {/* Hamburger Mobile */}
           <button
             ref={triggerRef}
             type="button"

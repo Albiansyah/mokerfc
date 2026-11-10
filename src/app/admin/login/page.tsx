@@ -8,7 +8,6 @@ export default function AdminLoginPage() {
       <section className="w-full max-w-sm bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
         <div className="p-8">
           
-          {/* Header Login */}
           <div className="mb-8 flex flex-col items-center text-center">
             <Image 
               src="/brand/logo-full.png" 
@@ -16,6 +15,7 @@ export default function AdminLoginPage() {
               width={48} 
               height={48} 
               className="h-12 w-auto object-contain mb-4 opacity-80" 
+              style={{ width: "auto", height: "auto" }}
             />
             <div className="text-xl font-bold text-slate-800 mb-1">
               Masuk ke Akun Anda
@@ -27,7 +27,6 @@ export default function AdminLoginPage() {
           
         </div>
         
-        {/* Footer Login */}
         <div className="bg-slate-50 p-4 border-t border-slate-100 text-center">
           <p className="text-xs text-slate-400">Sistem Informasi Internal</p>
         </div>

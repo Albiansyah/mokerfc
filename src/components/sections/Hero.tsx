@@ -70,7 +70,8 @@ export function Hero({ nextEvent, settings }: HeroProps) {
                     alt="Logo Moker FC"
                     width={100}
                     height={100}
-                    className="object-contain w-auto h-auto"
+                    className="object-contain"
+                    style={{ width: "auto", height: "auto" }}
                   />
                 </div>
 

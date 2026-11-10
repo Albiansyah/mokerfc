@@ -36,7 +36,7 @@ const NAV_ITEMS = [
       { label: "Catat Transaksi", href: "/admin/keuangan/baru" }
     ]
   },
-    { 
+  { 
     label: "Inventaris", 
     icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />,
     subItems: [
@@ -63,13 +63,19 @@ export function AdminShell({ children, email }: { children: React.ReactNode; ema
     <div className="min-h-screen bg-slate-50 flex flex-col md:flex-row">
       <aside className="hidden md:flex flex-col w-64 bg-white border-r border-slate-200 fixed inset-y-0 z-50">
         <div className="p-6 flex items-center gap-3 border-b border-slate-100">
-          <Image src="/brand/logo-full.png" alt="Logo" width={32} height={32} className="h-8 w-auto" />
+          <Image 
+            src="/brand/logo-full.png" 
+            alt="Logo" 
+            width={32} 
+            height={32} 
+            className="h-8 w-auto" 
+            style={{ width: "auto", height: "auto" }}
+          />
           <span className="font-bold text-navy tracking-wider text-sm">ADMIN PANEL</span>
         </div>
         
         <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
           {NAV_ITEMS.map((item) => {
-            // Cek apakah menu ini aktif (termasuk sub-items-nya)
             const isActive = item.subItems 
               ? item.subItems.some(sub => pathname.startsWith(sub.href))
               : pathname === item.href;
@@ -141,7 +147,14 @@ export function AdminShell({ children, email }: { children: React.ReactNode; ema
 
       <div className="flex-1 md:pl-64 flex flex-col min-h-screen">
         <header className="md:hidden flex items-center justify-between p-4 bg-white border-b border-slate-200 sticky top-0 z-40">
-          <Image src="/brand/logo-full.png" alt="Logo" width={32} height={32} className="h-8 w-auto" />
+          <Image 
+            src="/brand/logo-full.png" 
+            alt="Logo" 
+            width={32} 
+            height={32} 
+            className="h-8 w-auto" 
+            style={{ width: "auto", height: "auto" }}
+          />
           <form action={signOutAction}>
             <button className="text-xs font-bold text-red">Keluar</button>
           </form>
