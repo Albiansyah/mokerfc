@@ -4,7 +4,6 @@ import { usePathname } from "next/navigation";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 import { SkipLink } from "./SkipLink";
-import { BottomNav } from "./BottomNav";
 import { isAdminRoute } from "@/lib/navigation";
 import type { Settings } from "@/lib/types";
 
@@ -29,11 +28,11 @@ export function SiteShell({
         waAdmin2={settings.wa_admin_2}
         instagram={settings.instagram}
       />
-      <main id="main-content" tabIndex={-1} className="flex-1 focus:outline-none pb-16 md:pb-0">
+      {/* pb-16 dihapus karena udah ga ada BottomNav */}
+      <main id="main-content" tabIndex={-1} className="flex-1 focus:outline-none">
         {children}
       </main>
       <Footer settings={settings} />
-      <BottomNav />
     </>
   );
 }

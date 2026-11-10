@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { signOutAction } from "@/app/admin/actions";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const NAV_ITEMS = [
   { 
@@ -54,17 +54,94 @@ const NAV_ITEMS = [
 export function AdminShell({ children, email }: { children: React.ReactNode; email: string }) {
   const pathname = usePathname();
   const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({});
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
 
+  // Fungsi buka-tutup submenu
   const toggleMenu = (label: string) => {
     setOpenMenus((prev) => ({ ...prev, [label]: !prev[label] }));
   };
 
+  // Kunci scroll body pas menu mobile kebuka
+  useEffect(() => {
+    if (isMobileOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => { document.body.style.overflow = "unset"; };
+  }, [isMobileOpen]);
+
+  // Fungsi buat render isi menu (dipakai di Desktop & Mobile)
+  const renderMenu = () => (
+    <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
+      {NAV_ITEMS.map((item) => {
+        const isActive = item.subItems 
+          ? item.subItems.some(sub => pathname.startsWith(sub.href))
+          : pathname === item.href;
+        const isOpen = openMenus[item.label];
+        
+        return (
+          <div key={item.label}>
+            {item.subItems ? (
+              <button
+                onClick={() => toggleMenu(item.label)}
+                className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold transition-colors ${
+                  isActive ? "bg-red/10 text-red" : "text-slate-500 hover:bg-slate-50 hover:text-navy"
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">{item.icon}</svg>
+                  {item.label}
+                </div>
+                <svg className={`w-4 h-4 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+            ) : (
+              <Link
+                href={item.href!}
+                onClick={() => setIsMobileOpen(false)}
+                className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-colors ${
+                  isActive ? "bg-red/10 text-red" : "text-slate-500 hover:bg-slate-50 hover:text-navy"
+                }`}
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">{item.icon}</svg>
+                {item.label}
+              </Link>
+            )}
+
+            {item.subItems && (
+              <div className={`grid transition-all duration-300 ease-in-out ${isOpen ? "grid-rows-[1fr] opacity-100 mt-1" : "grid-rows-[0fr] opacity-0"}`}>
+                <div className="overflow-hidden">
+                  <div className="pl-11 pr-4 py-1 space-y-1">
+                    {item.subItems.map((sub) => (
+                      <Link
+                        key={sub.href}
+                        href={sub.href}
+                        onClick={() => setIsMobileOpen(false)}
+                        className={`block px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
+                          pathname === sub.href ? "bg-slate-100 text-navy font-bold" : "text-slate-500 hover:text-navy hover:bg-slate-50"
+                        }`}
+                      >
+                        {sub.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </nav>
+  );
+
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col md:flex-row">
       
-      {/* SIDEBAR (Hanya Muncul di Desktop) */}
-      <aside className="hidden md:flex flex-col w-64 bg-white border-r border-slate-200 fixed inset-y-0 z-50">
-        <div className="p-6 flex items-center gap-3 border-b border-slate-100">
+      {/* HEADER MOBILE (Hanya muncul di HP) */}
+      <header className="md:hidden sticky top-0 z-30 flex items-center justify-between p-4 bg-white border-b border-slate-200 shadow-sm">
+        <Link href="/admin" className="flex items-center gap-2">
           <Image 
             src="/brand/logo-full.png" 
             alt="Logo" 
@@ -73,69 +150,34 @@ export function AdminShell({ children, email }: { children: React.ReactNode; ema
             className="h-8 w-auto" 
             style={{ width: "auto", height: "auto" }}
           />
-          <span className="font-bold text-navy tracking-wider text-sm">ADMIN PANEL</span>
+          <span className="font-bold text-navy text-sm">ADMIN</span>
+        </Link>
+        <button 
+          onClick={() => setIsMobileOpen(true)}
+          className="p-2 -mr-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
+          aria-label="Buka menu"
+        >
+          <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </header>
+
+      {/* MOBILE DRAWER (Menu geser dari kiri) */}
+      <div className={`fixed inset-0 z-50 bg-black/50 transition-opacity md:hidden ${isMobileOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`} onClick={() => setIsMobileOpen(false)} />
+      <aside className={`fixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-slate-200 flex flex-col transform transition-transform duration-300 md:hidden ${isMobileOpen ? "translate-x-0" : "-translate-x-full"}`}>
+        <div className="p-6 flex items-center justify-between border-b border-slate-100">
+          <div className="flex items-center gap-3">
+            <Image src="/brand/logo-full.png" alt="Logo" width={32} height={32} className="h-8 w-auto" style={{ width: "auto", height: "auto" }} />
+            <span className="font-bold text-navy tracking-wider text-sm">MENU</span>
+          </div>
+          <button onClick={() => setIsMobileOpen(false)} className="p-1 text-slate-400 hover:text-red">
+            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
         </div>
-        
-        <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
-          {NAV_ITEMS.map((item) => {
-            const isActive = item.subItems 
-              ? item.subItems.some(sub => pathname.startsWith(sub.href))
-              : pathname === item.href;
-            const isOpen = openMenus[item.label];
-            
-            return (
-              <div key={item.label}>
-                {item.subItems ? (
-                  <button
-                    onClick={() => toggleMenu(item.label)}
-                    className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold transition-colors ${
-                      isActive ? "bg-red/10 text-red" : "text-slate-500 hover:bg-slate-50 hover:text-navy"
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">{item.icon}</svg>
-                      {item.label}
-                    </div>
-                    <svg className={`w-4 h-4 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </button>
-                ) : (
-                  <Link
-                    href={item.href!}
-                    className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-colors ${
-                      isActive ? "bg-red/10 text-red" : "text-slate-500 hover:bg-slate-50 hover:text-navy"
-                    }`}
-                  >
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">{item.icon}</svg>
-                    {item.label}
-                  </Link>
-                )}
-
-                {item.subItems && (
-                  <div className={`grid transition-all duration-300 ease-in-out ${isOpen ? "grid-rows-[1fr] opacity-100 mt-1" : "grid-rows-[0fr] opacity-0"}`}>
-                    <div className="overflow-hidden">
-                      <div className="pl-11 pr-4 py-1 space-y-1">
-                        {item.subItems.map((sub) => (
-                          <Link
-                            key={sub.href}
-                            href={sub.href}
-                            className={`block px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
-                              pathname === sub.href ? "bg-slate-100 text-navy font-bold" : "text-slate-500 hover:text-navy hover:bg-slate-50"
-                            }`}
-                          >
-                            {sub.label}
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </nav>
-
+        {renderMenu()}
         <div className="p-4 border-t border-slate-100">
           <p className="text-xs text-slate-500 mb-3 truncate">{email}</p>
           <form action={signOutAction}>
@@ -146,36 +188,31 @@ export function AdminShell({ children, email }: { children: React.ReactNode; ema
         </div>
       </aside>
 
-      {/* AREA KONTEN UTAMA */}
+      {/* SIDEBAR DESKTOP */}
+      <aside className="hidden md:flex flex-col w-64 bg-white border-r border-slate-200 fixed inset-y-0 z-50">
+        <div className="p-6 flex items-center gap-3 border-b border-slate-100">
+          <Image src="/brand/logo-full.png" alt="Logo" width={32} height={32} className="h-8 w-auto" style={{ width: "auto", height: "auto" }} />
+          <span className="font-bold text-navy tracking-wider text-sm">ADMIN PANEL</span>
+        </div>
+        {renderMenu()}
+        <div className="p-4 border-t border-slate-100">
+          <p className="text-xs text-slate-500 mb-3 truncate">{email}</p>
+          <form action={signOutAction}>
+            <button className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 text-sm font-semibold hover:bg-slate-50 hover:text-red transition-colors">
+              Keluar
+            </button>
+          </form>
+        </div>
+      </aside>
+
+      {/* KONTEN UTAMA */}
       <div className="flex-1 md:pl-64 flex flex-col min-h-screen">
-        <main className="flex-1 p-4 sm:p-8 pb-24 md:pb-8">
+        <main className="flex-1 p-4 sm:p-8">
           <div className="max-w-6xl mx-auto">
             {children}
           </div>
         </main>
       </div>
-
-      {/* BOTTOM NAVIGATION (Hanya Muncul di Mobile/HP) */}
-      <nav className="fixed bottom-0 inset-x-0 z-40 bg-white border-t border-slate-200 flex justify-around md:hidden pb-safe shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
-        {NAV_ITEMS.map((item) => {
-          const isActive = item.subItems 
-            ? item.subItems.some(sub => pathname.startsWith(sub.href))
-            : pathname === item.href;
-            
-          return (
-            <Link 
-              key={item.label} 
-              href={item.subItems ? item.subItems[0].href : item.href!} 
-              className={`flex flex-col items-center justify-center p-2 w-full ${
-                isActive ? "text-red" : "text-slate-400 hover:text-slate-600"
-              }`}
-            >
-              <svg className="w-5 h-5 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">{item.icon}</svg>
-              <span className="text-[10px] font-bold">{item.label}</span>
-            </Link>
-          );
-        })}
-      </nav>
     </div>
   );
 }
